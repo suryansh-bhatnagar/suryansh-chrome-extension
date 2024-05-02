@@ -8,10 +8,10 @@ import ResonseCard from "~components/ResonseCard";
 
 const Modal= ({ setShowModal }) => {
 
-  const [input, setInput] = useState(undefined);
+  const [input, setInput] = useState('');
   const [isLoading, setIsLoading] = useState(false);
 
-  const [ userPrompt, setUserPrompt] = useState(undefined);
+  const [ userPrompt, setUserPrompt] = useState('');
 
   const [responseArray, setResponseArray] = useState([]);     
   
@@ -31,22 +31,43 @@ const Modal= ({ setShowModal }) => {
 return pr;
   }
 
+  // handleGenerate function to process input and fetch results
   const handleGenerate =(e)=>{
-  e.preventDefault();
-  setIsLoading(true);
-  setUserPrompt(input)
-  getResult(input)
-  .then(data => {
-    if(data)setResponseArray([...responseArray,data]);
-    setIsLoading(false)
-  })
-  .catch(error =>{
-    console.error('Error:', error)
-    setIsLoading(false);
-    });
-  console.log('handle generate')
+
+    // Prevent the default form submit action
+    e.preventDefault(); 
+
+    // Set loading state to true to show a disable button
+    setIsLoading(true);  
+
+    // Save the current input to state for later use
+    setUserPrompt(input)
+
+     // Call getResult passing the current input value
+    getResult(input)
+    .then(data => {
+
+      // Update the response array to include the new data
+      if(data)setResponseArray([...responseArray,data]);
+      setIsLoading(false)
+    })
+    .catch(error =>{
+      console.error('Error:', error)
+      setIsLoading(false);
+      });
   }
 
+  const handleInsert = ()=>{
+    // Access the div with the class 'msg-form__contenteditable'
+    const editableDiv = document.querySelector('.msg-form__contenteditable');
+
+    // Assuming there is only one <p> element inside this div, get the <p>
+    const pElement = editableDiv.querySelector('p');
+
+    // Add some text to the content of the <p>
+    pElement.textContent = responseArray.slice(-1)[0];
+    console.log('handle insert');
+  }
 
 
   return (
@@ -89,14 +110,14 @@ return pr;
 
           </div>
           <div className="plasmo-flex plasmo-flex-row-reverse plasmo-mt-4">
-          <button disabled={isLoading || userPrompt !== undefined} type="submit" className="plasmo-bg-blue-600 plasmo-px-3 plasmo-py-2 plasmo-rounded-md plasmo-gap-2 plasmo-w-fit   plasmo-flex plasmo-flex-row plasmo-items-center disabled:plasmo-bg-slate-400">
+          <button disabled={isLoading || userPrompt !== ''} type="submit" className="plasmo-bg-blue-600 plasmo-px-3 plasmo-py-2 plasmo-rounded-md plasmo-gap-2 plasmo-w-fit   plasmo-flex plasmo-flex-row plasmo-items-center disabled:plasmo-bg-slate-400">
           {!responseArray.length ?  
             <><AiOutlineSend style={iconStyles} /> <span className="plasmo-text-white">Generate</span></>  : 
             <><LuRefreshCcw  style={iconStyles} /> <span className="plasmo-text-white">Regenerate</span></> 
             }
           </button>
 
-          { !!(responseArray.length) &&  <button className="plasmo-mx-4 plasmo-border plasmo-border-gray-400 plasmo-px-3 plasmo-py-2 plasmo-gap-2 plasmo-rounded-md plasmo-w-fit   plasmo-flex plasmo-flex-row plasmo-items-center ">
+          { !!(responseArray.length) &&  <button onClick={handleInsert} type="button" className="plasmo-mx-4 plasmo-border plasmo-border-gray-400 plasmo-px-3 plasmo-py-2 plasmo-gap-2 plasmo-rounded-md plasmo-w-fit   plasmo-flex plasmo-flex-row plasmo-items-center ">
               <><FaArrowDown  style={iconStyles} /> <span className="plasmo-text-gray-600">Insert</span></> 
           </button>}
           </div>
