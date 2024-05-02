@@ -79,11 +79,12 @@ const Modal= ({ setShowModal }) => {
         <div>
           {/* Promts  */}
           <div className="plasmo-flex plasmo-flex-row-reverse plasmo-text-2xl">
-           { !!(userPrompt?.length) && <div className="plasmo-bg-gray-300 plasmo-w-1/2 plasmo-p-3 plasmo-rounded-md">
-          {userPrompt}
-            </div>}
+            { !!(userPrompt?.length) && <div className="plasmo-bg-gray-300 plasmo-w-1/2 plasmo-p-3 plasmo-rounded-md">
+                  {userPrompt}
+              </div>
+            }
           </div>
-
+          {isLoading && <p className="plasmo-text-xl">Loading...</p> }
           {/* Responses  */}
           {
             responseArray.map((response,index)=> <ResonseCard key={index} response={response}/>)
