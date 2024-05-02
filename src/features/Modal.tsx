@@ -1,9 +1,7 @@
 
 import { useState } from "react"
-import { AiOutlineSend, AiOutlineStop } from "react-icons/ai"
-import { LuRefreshCcw } from "react-icons/lu";
-import { FaArrowDown } from "react-icons/fa";
 import ResonseCard from "~components/ResonseCard";
+import { ArrowDownIcon,RefreshIcon,SendIcon } from "../../assets";
 
 
 const Modal= ({ setShowModal }) => {
@@ -15,20 +13,23 @@ const Modal= ({ setShowModal }) => {
 
   const [responseArray, setResponseArray] = useState([]);     
   
-  let iconStyles = { color: "white" };
 
-  const getResult = (input)=>{
-  const pr = new Promise(function(resolve, reject){
-  if(input){
-    setTimeout(() => {
-      resolve(`Thank you for the opportunity! If you have any more questions or if there's anything else I can help you with, feel free to ask.`);
-    }, 2000);
-  }else{
-    const err = new Error('Please enter prompt')
-    reject(err);
-  }
-})
-return pr;
+  const getResult = (input:string)=>{
+    // Create a new promise to manage asynchronous operation.
+    const pr = new Promise(function(resolve, reject){
+    if(input){
+      // Use setTimeout to simulate an asynchronous operation, such as a server request.
+      setTimeout(() => {
+        // If input is valid, resolve the promise with a success message after 2 seconds.
+        resolve(`Thank you for the opportunity! If you have any more questions or if there's anything else I can help you with, feel free to ask.`);
+      }, 2000);
+    }else{
+        // If no input is provided, reject the promise with an error message.
+      const err = new Error('Please enter prompt')
+      reject(err);
+    }
+    })
+    return pr;
   }
 
   // handleGenerate function to process input and fetch results
@@ -74,16 +75,10 @@ return pr;
     <div className="">
       <div className="backdrop" onClick={()=>setShowModal(false)} />
       <div className="modalWindow">
-        {/*Cross-sign*/}
-        <span
-          onClick={() => setShowModal(false)}
-          className="plasmo-absolute plasmo-top-[0.7rem] plasmo-right-[0.7rem] plasmo-text-[16px] plasmo-font-medium plasmo-cursor-pointer hover:plasmo-bg-slate-100 plasmo-h-[30px] plasmo-w-[30px] plasmo-flex plasmo-items-center plasmo-justify-center plasmo-rounded-full">
-          X
-        </span>
         {/* promt and response  */}
         <div>
           {/* Promts  */}
-          <div className="plasmo-flex plasmo-flex-row-reverse">
+          <div className="plasmo-flex plasmo-flex-row-reverse plasmo-text-2xl">
            { !!(userPrompt?.length) && <div className="plasmo-bg-gray-300 plasmo-w-1/2 plasmo-p-3 plasmo-rounded-md">
           {userPrompt}
             </div>}
@@ -98,7 +93,7 @@ return pr;
 
         {/* Input Field */}
         <form action="submit" onSubmit={handleGenerate}>
-          <div className="plasmo-rounded-md plasmo-p-2 plasmo-border-2 plasmo-mt-8 plasmo-h-[40px] plasmo-flex plasmo-justify-between plasmo-items-center plasmo-border-gray-200">
+          <div className="plasmo-rounded-md plasmo-p-2 plasmo-border-2 plasmo-mt-8 plasmo-h-[40px] plasmo-flex plasmo-justify-between plasmo-items-center plasmo-border-gray-200 plasmo-text-2xl">
             <input
               type="text"
               className="plasmo-w-[90%] plasmo-outline-none plasmo-bg-white"
@@ -110,15 +105,15 @@ return pr;
 
           </div>
           <div className="plasmo-flex plasmo-flex-row-reverse plasmo-mt-4">
-          <button disabled={isLoading || userPrompt !== ''} type="submit" className="plasmo-bg-blue-600 plasmo-px-3 plasmo-py-2 plasmo-rounded-md plasmo-gap-2 plasmo-w-fit   plasmo-flex plasmo-flex-row plasmo-items-center disabled:plasmo-bg-slate-400">
+          <button disabled={isLoading || userPrompt !== ''} type="submit" className="plasmo-bg-blue-600 plasmo-px-4 plasmo-py-2 plasmo-rounded-md plasmo-gap-3 plasmo-w-fit   plasmo-flex plasmo-flex-row plasmo-items-center disabled:plasmo-bg-slate-400 plasmo-text-2xl">
           {!responseArray.length ?  
-            <><AiOutlineSend style={iconStyles} /> <span className="plasmo-text-white">Generate</span></>  : 
-            <><LuRefreshCcw  style={iconStyles} /> <span className="plasmo-text-white">Regenerate</span></> 
+            <><SendIcon /> <span className="plasmo-text-white ">Generate</span></>  : 
+            <><RefreshIcon /> <span className="plasmo-text-white">Regenerate</span></> 
             }
           </button>
 
-          { !!(responseArray.length) &&  <button onClick={handleInsert} type="button" className="plasmo-mx-4 plasmo-border plasmo-border-gray-400 plasmo-px-3 plasmo-py-2 plasmo-gap-2 plasmo-rounded-md plasmo-w-fit   plasmo-flex plasmo-flex-row plasmo-items-center ">
-              <><FaArrowDown  style={iconStyles} /> <span className="plasmo-text-gray-600">Insert</span></> 
+          { !!(responseArray.length) &&  <button onClick={handleInsert} type="button" className="plasmo-mx-4 plasmo-border plasmo-border-gray-400 plasmo-px-4 plasmo-py-2 plasmo-gap-3 plasmo-rounded-md plasmo-w-fit   plasmo-flex plasmo-flex-row plasmo-items-center plasmo-text-2xl ">
+              <><ArrowDownIcon /> <span className="plasmo-text-gray-600">Insert</span></> 
           </button>}
           </div>
         </form>
