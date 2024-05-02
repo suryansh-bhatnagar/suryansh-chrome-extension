@@ -11,7 +11,7 @@ export const getStyle = () => {
 
 const PlasmoOverlay: React.FC<{}> = () => {
   //showing modal window state
-  const [showModal, setShowModal] = useState<boolean>(false)
+  const [showModal, setShowModal] = useState<boolean>(true)
 
   useEffect(() => {
     // Listening for messages from the background script
